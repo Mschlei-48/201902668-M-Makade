@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     # Set the timeout for this step to 10 minutes
     timeout-minutes: 120
-    #Set the CML container
-    #container:docker://dvcorg/cml-py3:latest
-
     steps:
       - uses: actions/checkout@v3
       - uses: iterative/setup-cml@v1
