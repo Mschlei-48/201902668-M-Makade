@@ -3,7 +3,7 @@ name: FirstYAML
 on:
   push:
     branches:
-      - main
+      - fine-tuning-branch
 
 permissions:
   id-token: write
