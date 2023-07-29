@@ -12,6 +12,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     # Set the timeout for this step to 10 minutes
     timeout-minutes: 120
     steps:
