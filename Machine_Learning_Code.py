@@ -2,7 +2,9 @@ import pandas as pd
 import pandas_datareader.data as pdr
 import datetime as dt
 from sklearn.model_selection import train_test_split
-from sklearn import metrics
+from sklearn.metrics import mean_squared_error,r2_score,accuracy_score
+from sklearn.neighbors import KNeighborsRegressor
+import matplotlib.pyplot as plt
 
 df = pd.read_csv('data.csv', sep=';')
 print(df.head())
@@ -42,10 +44,32 @@ print(x_train.shape,y_train.shape)
 print(x_test.shape,y_test.shape)
 
 #Load the knn model
-knn = KNeighborsClassifier(n_neighbors=3)
+knn = KNeighborsRegressor(n_neighbors=3)
 
 # Train the model on the training data
 knn.fit(x_train, y_train)
 
 # Make predictions on the test data
 y_pred = knn.predict(x_test)
+
+#Save the results
+r2_score = r2_score(y_test, y_pred)
+mse_score=mean_squared_error(y_test,y_pred)
+#accuracy = accuracy_score(y_test, y_pred)
+print("R2 Score:", r2_score)
+print("Mean squared error:",mse_score)
+#print("Accuracy:",accuracy)
+
+
+#plot the actual vs predicted plot
+plt.scatter(y_test,y_pred,c="blue",label="Actual vs Predicted")
+plt.xlabel("Actual")
+plt.ylabel("Predicted")
+plt.show()
+# Writing the result to a file
+with open('results.txt', 'w') as f:
+    f.write(f"R2 Score: {r2_score}\n MSE error: {mse_score}")
+#with open('mse_results.txt','w') as f:
+    #f.write(f'MSE error: {mse_score}\n')
+#save the plot
+plt.savefig("actual_vs_predicted.png",dpi=300)
