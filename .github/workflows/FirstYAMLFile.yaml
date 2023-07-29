@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python Machine_Learning_Code.py
-      -name:Get CML Report Results
+      -name: Get CML Report Results
         env:
             REPO_TOKEN:${{secrets.GITHUB_TOKEN}}
         run: |
