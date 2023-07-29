@@ -3,7 +3,7 @@ name: FirstYAML
 on:
   push:
     branches:
-      - fine-tuning-branch
+      - xgboost-regressor
 
 permissions:
   id-token: write

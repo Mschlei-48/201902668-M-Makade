@@ -3,9 +3,9 @@ from sklearn.model_selection import train_test_split,GridSearchCV
 from sklearn.metrics import mean_squared_error,r2_score,accuracy_score
 from sklearn.neighbors import KNeighborsRegressor
 import matplotlib.pyplot as plt
+import xgboost as xgb
 
 df = pd.read_csv('data.csv', sep=';')
-print(df.head())
 #Melt the columns other than  H03,H05, and H16 into two columns sales and date, where sales will have the 
 # values of the melted columns, while date will have the column names of the melted columns
 df = df.melt(id_vars=['H03', 'H05', 'H16'],
@@ -35,40 +35,29 @@ df["date"] = pd.Categorical(df["date"], categories=df["date"].unique(), ordered=
 features=df.loc[:,["H03","H05","H16","date"]]
 labels=df.loc[:,"sales"]
 
+#Get head of the dataset
+print(features.head(2))
 #Split data into train and test
 x_train,x_test,y_train,y_test=train_test_split(features,labels,
     test_size=0.3,random_state=25)
 print(x_train.shape,y_train.shape)
 print(x_test.shape,y_test.shape)
 
+#Load the xgboost model
+model = xgb.XGBRegressor()
+#For the model
+model.fit(x_train, y_train)
 
-#Define a grid of parameters to use for hyper-parameter optimization
-k_values = list(range(1, 10))
 
-# Create a dictionary of hyperparameters to search over
-param_grid = {'n_neighbors': k_values}
-
-#Load the knn model
-knn = KNeighborsRegressor()
-
-# Do GridSearchCV object to find the best k value using cross-validation
-grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='neg_mean_squared_error')
-grid_search.fit(x_train, y_train)
-
-# Get the best k value and the corresponding best model
-best_k = grid_search.best_params_['n_neighbors']
-best_model = grid_search.best_estimator_
-
-# Evaluate the best model on the test set
-y_pred = best_model.predict(x_test)
+# Evaluate the model on the test set
+y_pred = model.predict(x_test)
 
 #Save the results
 r2_score = r2_score(y_test, y_pred)
 mse_score=mean_squared_error(y_test,y_pred)
-#accuracy = accuracy_score(y_test, y_pred)
 print("R2 Score:", r2_score)
 print("Mean squared error:",mse_score)
-#print("Accuracy:",accuracy)
+
 
 
 #plot the actual vs predicted plot
@@ -83,3 +72,4 @@ with open('results.txt', 'w') as f:
     #f.write(f'MSE error: {mse_score}\n')
 #save the plot
 plt.savefig("actual_vs_predicted.png",dpi=300)
+
