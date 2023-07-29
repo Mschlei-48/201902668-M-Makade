@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   run:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     # Set the timeout for this step to 10 minutes
     timeout-minutes: 120
     #Set the CML container
