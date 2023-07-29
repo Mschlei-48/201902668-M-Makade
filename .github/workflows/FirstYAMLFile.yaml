@@ -29,13 +29,9 @@ jobs:
         env:
             REPO_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-        #Get the text Results written on the report.md file
           echo "# Results" > report.md
-        #Get the results.txt file with the performance metrics written also in the report.md file
           cat results.txt >> report.md
-        #Get the plot of residuals added to the report.md file as well
           echo '![](./actual_vs_predicted.png "Predicted vs Actual")'>>report.md
-        #Create the report.md file using cml container function "cml comment"
           cml comment create report.md
 
 
