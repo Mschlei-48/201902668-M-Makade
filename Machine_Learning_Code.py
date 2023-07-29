@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split,GridSearchCV
 from sklearn.metrics import mean_squared_error,r2_score,accuracy_score
 from sklearn.neighbors import KNeighborsRegressor
 import matplotlib.pyplot as plt
@@ -41,14 +41,26 @@ x_train,x_test,y_train,y_test=train_test_split(features,labels,
 print(x_train.shape,y_train.shape)
 print(x_test.shape,y_test.shape)
 
+
+#Define a grid of parameters to use for hyper-parameter optimization
+k_values = list(range(1, 10))
+
+# Create a dictionary of hyperparameters to search over
+param_grid = {'n_neighbors': k_values}
+
 #Load the knn model
-knn = KNeighborsRegressor(n_neighbors=3)
+knn = KNeighborsRegressor()
 
-# Train the model on the training data
-knn.fit(x_train, y_train)
+# Do GridSearchCV object to find the best k value using cross-validation
+grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='neg_mean_squared_error')
+grid_search.fit(x_train, y_train)
 
-# Make predictions on the test data
-y_pred = knn.predict(x_test)
+# Get the best k value and the corresponding best model
+best_k = grid_search.best_params_['n_neighbors']
+best_model = grid_search.best_estimator_
+
+# Evaluate the best model on the test set
+y_pred = best_model.predict(x_test)
 
 #Save the results
 r2_score = r2_score(y_test, y_pred)
