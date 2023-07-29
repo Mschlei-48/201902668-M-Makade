@@ -1,6 +1,4 @@
 import pandas as pd
-import pandas_datareader.data as pdr
-import datetime as dt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error,r2_score,accuracy_score
 from sklearn.neighbors import KNeighborsRegressor
